@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI店員マーリングのペットフード診断</title>
+    <title>お悩み・症状別ペットフード診断</title>
     <style>
         body { font-family: sans-serif; background: #f0f4f8; color: #333; padding: 15px; margin: 0; }
         .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { font-size: 1.2rem; text-align: center; color: #4a5568; margin-bottom: 15px; }
+        h1 { font-size: 1.2rem; text-align: center; color: #2b6cb0; margin-bottom: 15px; }
         .section-title { font-size: 0.9rem; font-weight: bold; color: #4a5568; margin: 15px 0 5px 0; border-left: 4px solid #3182ce; padding-left: 8px; }
         .radio-group { display: flex; gap: 15px; margin-bottom: 10px; font-size: 0.95rem; }
-        .check-item { display: block; background: #fcfcfc; border: 1px solid #eee; padding: 12px; margin-bottom: 8px; border-radius: 6px; font-size: 0.9rem; }
+        .check-item { display: block; background: #fcfcfc; border: 1px solid #eee; padding: 12px; margin-bottom: 8px; border-radius: 6px; font-size: 0.9rem; cursor: pointer; }
         .check-item input { margin-right: 10px; transform: scale(1.2); }
         .submit-btn { width: 100%; background: #3182ce; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
         .submit-btn:active { background: #2b6cb0; }
         #chat-box { margin-top: 15px; border-top: 2px dashed #cbd5e0; padding-top: 15px; display: none; }
-        .shop-staff { background: #ebf8ff; border: 1px solid #bee3f8; padding: 12px; border-radius: 8px; font-size: 0.9rem; line-height: 1.5; }
+        .shop-staff { background: #ebf8ff; border: 1px solid #bee3f8; padding: 12px; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; }
         .staff-name { font-weight: bold; color: #2b6cb0; margin-bottom: 5px; }
         .food-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-top: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .food-title { font-weight: bold; color: #2d3748; font-size: 1rem; margin-bottom: 4px; }
-        .maker-name { font-size: 0.85rem; color: #718096; margin-bottom: 8px; }
+        .maker-name { font-size: 0.85rem; color: #718096; margin-bottom: 4px; font-weight: bold; }
+        .pack-info { display: inline-block; background: #feebc8; color: #c05621; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-bottom: 8px; font-weight: bold; }
         .food-img { width: 100%; height: auto; display: block; margin-bottom: 10px; border-radius: 4px; background: #eee; }
         .shop-links { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
-        .shop-btn { text-align: center; text-decoration: none; padding: 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; }
+        .shop-btn { text-align: center; text-decoration: none; padding: 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; }
         .official { background: #22c55e; grid-column: span 2; }
         .rakuten { background: #bfdbfe; color: #1e40af; }
         .yahoo { background: #ff0033; }
@@ -33,7 +34,7 @@
 <body>
 
 <div class="container">
-    <h1>フード診断（メーカー・お魚別厳選）</h1>
+    <h1>🐾 症状・お悩み別フード診断</h1>
     
     <div class="section-title">1. ペットの種類</div>
     <div class="radio-group">
@@ -44,68 +45,107 @@
     <div class="section-title">2. 年齢ステージ</div>
     <div class="radio-group">
         <label><input type="radio" name="age" value="パピー・子猫"> パピー・子猫</label>
-        <label><input type="radio" name="age" value="成犬・成猫" checked> 成猫・成猫</label>
+        <label><input type="radio" name="age" value="成犬・成猫" checked> 成犬・成猫</label>
         <label><input type="radio" name="age" value="シニア"> シニア</label>
     </div>
 
     <div class="section-title">3. 気になる症状やご希望</div>
     <form id="symptomForm">
-        <label class="check-item"><input type="checkbox" name="symptoms" value="fish"> 魚のご飯（フィッシュ）🐟 お肉不使用・お魚のご飯が良い</label>
-        <label class="check-item"><input type="checkbox" name="symptoms" value="tears"> 涙やけ😭 涙やけが気になる</label>
-        <label class="check-item"><input type="checkbox" name="symptoms" value="skin"> 皮膚・毛並み✨ 皮膚のカカカイ・毛並み</label>
-        <label class="check-item"><input type="checkbox" name="symptoms" value="appetite"> 高齢犬・食べむら😋 【犬】高齢で食べむらがある</label>
-        <label class="check-item"><input type="checkbox" name="symptoms" value="kidney"> 腎臓の健康ケア🩺 腎臓の健康が心配</label>
+        <label class="check-item"><input type="checkbox" name="symptoms" value="fish"> 🐟 お魚メインのご飯が良い（低アレルゲン・お肉不使用）</label>
+        <label class="check-item"><input type="checkbox" name="symptoms" value="tears"> 😭 涙やけ・目元をキレイに保ちたい</label>
+        <label class="check-item"><input type="checkbox" name="symptoms" value="skin"> ✨ 皮膚のカイカイ・毛並みをケアしたい</label>
+        <label class="check-item"><input type="checkbox" name="symptoms" value="appetite"> 😋 食いつきを高めたい・食べむらがある</label>
+        <label class="check-item"><input type="checkbox" name="symptoms" value="kidney"> 🩺 腎臓・下部尿路の健康維持が心配</label>
     </form>
 
-    <button class="submit-btn" onclick="generateTotalAdvice()">🔍 最適なフードを提案する</button>
+    <button class="submit-btn" onclick="generateTotalAdvice()">🔍 最適なフードを検索する</button>
 
     <div id="chat-box">
         <div class="shop-staff">
-            <div class="staff-name">🤖 AI店員からのトータルアドバイス</div>
+            <div class="staff-name">🤖 AI店員マーリングからのアドバイス</div>
             <div id="reply-text"></div>
         </div>
         <div id="recommended-foods"></div>
-        <div class="notice">※重い病気や症状が続く場合は、必ずかかりつけの獣医師の先生にご相談の上、最終的な判断をしてください。</div>
+        <div class="notice">※重い病気や症状が続く場合は、必ずかかりつけの獣医師にご相談の上、最終的な判断をしてください。</div>
     </div>
 </div>
 
 <script>
-// 🚨 エラー強制表示機能（スマホデバッグ用）
-window.onerror = function(message, source, lineno, colno, error) {
-    alert("⚠️ JSエラーが発生しました！\n\nエラー内容: " + message + "\n行番号: " + lineno);
-    return true;
-};
-
+// 犬と猫のデータベースを完全に分離しました
 const foodDatabase = {
-    "fish": {
-        name: "シンプル ワイルドレシピ（超小型犬〜小型犬用）成犬用 サーモン",
-        maker: "ニュートロ（Nutro）",
-        img: "https://unsplash.com",
-        desc: "お肉にアレルギーがある子や、皮膚が敏感な子に大人気のお魚（サーモン）メインのフードです。穀物フリーで消化が良く、オメガ3脂肪酸が皮膚をケアします。"
+    "いぬ": {
+        "fish": {
+            name: "ワイルドレシピ 超小型犬〜小型犬用 成犬用 サーモン",
+            maker: "ニュートロ（Nutro）",
+            pack: "サンプル配布対応あり",
+            img: "https://unsplash.com",
+            desc: "お肉にアレルギーがある子に大人気のお魚メインフード。高タンパク・穀物フリーで消化が良く、食いつきも抜群です。"
+        },
+        "tears": {
+            name: "セレクトバランス サーモン 小粒",
+            maker: "セレクトバランス",
+            pack: "サンプル配布対応あり / クランベリー配合",
+            img: "https://unsplash.com",
+            desc: "オメガ脂肪酸が皮膚と毛並みを整え、涙やけの原因となる老廃物を溜まりにくくします。尿路ケアのクランベリーやコアジンムQ10も配合の優秀フードです。"
+        },
+        "skin": {
+            name: "プロプラン 皮膚・被毛の健康維持 サーモン",
+            maker: "ネスレ ピュリナ（PRO PLAN）",
+            pack: "サンプル配布対応あり / 皮膚ケア特化",
+            img: "https://unsplash.com",
+            desc: "良質なサーモンを筆頭に、皮膚のバリア機能を高めるアミノ酸や必須脂肪酸を独自のバランスで配合。カイカイが出やすいデリケートな子に最適です。"
+        },
+        "appetite": {
+            name: "シュプレモ 地中海のレシピ サーモン",
+            maker: "ニュートロ（Nutro）",
+            pack: "自然素材の豊かな香り",
+            img: "https://unsplash.com",
+            desc: "ひまわり油やトマト、パセリなど、地中海のめぐみを凝縮。お肉不使用でサーモンの香りが引き立ち、食べむらのある子の食欲を刺激します。"
+        },
+        "kidney": {
+            name: "プロプラン 小型犬 成犬用 腎臓の健康維持",
+            maker: "ネスレ ピュリナ（PRO PLAN）",
+            pack: "科学的アプローチフード",
+            img: "https://unsplash.com",
+            desc: "シニア期だけでなく成犬期から長く使える、リンの含有量を適切に抑えた腎臓ケア配慮フードです。"
+        }
     },
-    "tears": {
-        name: "メディコート 腸内環境ケア",
-        maker: "ペットライン（PETLINE）",
-        img: "https://unsplash.com",
-        desc: "お腹の環境を整え、ドナドナ涙の原因となる老廃物をスッキリさせて涙やけをケアします。アレルギーに配慮された安心の国産フードです。"
-    },
-    "skin": {
-        name: "ニュートロ シュプレモ ラム",
-        maker: "ニュートロ（Nutro）",
-        img: "https://unsplash.com",
-        desc: "美しく健康な被毛を維持するために作られたプレミアムフードです。ひまわり油や亜麻仁などの自然由来の良質な脂質が、皮膚のカイカイやパサつきを抑えます。"
-    },
-    "appetite": {
-        name: "ロイヤルカナン 小型犬用 シニア ドライフード",
-        maker: "ロイヤルカナン（ROYAL CANIN）",
-        img: "https://unsplash.com",
-        desc: "食べむらがある高齢犬には、小分けパックを使い常に「開けたての強い香り」で刺激するのが一番。総合栄養食のおやつをトッピングに使うのもおすすめです。"
-    },
-    "kidney": {
-        name: "ウェルケア 腎臓の健康維持",
-        maker: "イースター（Yeaster）",
-        img: "https://unsplash.com",
-        desc: "活性炭（ヘルスカーボン）が体内の老廃物を吸着して排出を助ける、シニア期の腎臓ケアにイチオシの国産フードです。パッケージにハッキリ「腎臓」と記載されています。"
+    "ねこ": {
+        "fish": {
+            name: "ワイルドレシピ 成猫用 サーモン",
+            maker: "ニュートロ（Nutro）",
+            pack: "高タンパク 40%以上",
+            img: "https://unsplash.com",
+            desc: "本来は肉食である猫ちゃんのために、お魚を第一主原料にした穀物フリーフード。お肉アレルギーがある猫ちゃんにもぴったりです。"
+        },
+        "tears": {
+            name: "ピュリナワン 健康マルチケア 適切な体重維持 サーモン/ツナ",
+            maker: "ネスレ ピュリナ（PURINA ONE）",
+            pack: "★開けたて新鮮な500g×4分包パック！",
+            img: "https://unsplash.com",
+            desc: "毛並みやお腹の健康をトータルケアすることで目元の健康も維持。使い切りやすい小分けパックなので、風味が落ちず最後まで美味しく食べてくれます。"
+        },
+        "skin": {
+            name: "ナチュラルチョイス 室内猫用 アダルト サーモン",
+            maker: "ニュートロ（Nutro）",
+            pack: "皮膚・被毛の健康維持に配慮",
+            img: "https://unsplash.com",
+            desc: "リノール酸と亜鉛の絶妙なバランスにより、猫ちゃんの毛並みをツヤツヤに整えます。毛玉吐き出し軽減の食物繊維も配合。"
+        },
+        "appetite": {
+            name: "ピュリナワン 避妊・去勢した猫の体重ケア サーモン",
+            maker: "ネスレ ピュリナ（PURINA ONE）",
+            pack: "★抜群の食いつき＆500g×4分包パック！",
+            img: "https://unsplash.com",
+            desc: "独自の新鮮サーモン調理法で、飽きっぽい猫ちゃんも大満足の食いつき。美味しさを保ったまま体重管理もできる大人気フードです。"
+        },
+        "kidney": {
+            name: "メディファス 下部尿路の健康維持 フィッシュ味",
+            maker: "ペットライン（Medyfas）",
+            pack: "★国産・尿pHコントロール・約250g超小分け！",
+            img: "https://unsplash.com",
+            desc: "猫ちゃんに特に多いおしっこトラブル（尿石症など）に配慮。超小分けパック（分包）仕様なので、いつでも開けたての強い香りで猫ちゃんが喜んでくれます。"
+        }
     }
 };
 
@@ -119,56 +159,37 @@ function generateTotalAdvice() {
         selectedSymptoms.push(cb.value);
     });
 
-    if (selectedSymptoms.length === 0) {
-        alert("気になる項目を1つ以上チェックしてください！");
+    // 🚨 裏技：猫×シニアで、お悩みチェックが0個だった場合の長寿猫エピソード発動
+    if (petType === "ねこ" && age === "シニア" && selectedSymptoms.length === 0) {
+        let specialAdvice = `
+            <p><strong>現在のフードをそのまま継続することをおすすめします！</strong></p>
+            <p>以前、当店の店頭に<strong>20歳の超長寿でとても元気な猫ちゃん</strong>が来られました。飼い主様にフードをお伺いしたところ、いわゆる昔ながらのリーズナブルなご飯をずっと食べておられたそうです。</p>
+            <p>シニア期で病気もせず元気に過ごせている場合、そのフードが猫ちゃんの体質に100%マッチしている最高の証拠です。高級なフードや療法食に急に変えると、かえって胃腸のバランスを崩してしまうことがあります。今元気であれば、変えずにそのまま見守ってあげるのが一番の正解ですよ！</p>
+        `;
+        document.getElementById('reply-text').innerHTML = specialAdvice;
+        document.getElementById('recommended-foods').innerHTML = ""; // フードは出さない
+        document.getElementById('chat-box').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         return;
     }
 
-    let specialEpisode = "";
-    if (petType === "ねこ" && age === "シニア") {
-        specialEpisode = "<p><strong>シニア期の猫ちゃん</strong>は、リーズナブルなご飯をずっと食べて元気な子もおられます。</p>";
+    // 通常のチェックなしエラー
+    if (selectedSymptoms.length === 0) {
+        alert("気になるお悩み項目を1つ以上チェックしてください！");
+        return;
     }
 
-    let adviceHtml = `<p><strong>${age}</strong>の<strong>${petType}ちゃん</strong>ですね。ご要望に合わせて、お店でも信頼の厚い厳選ブランドから最適なフードをご提案します。</p>${specialEpisode}`;
+    // 基本アドバイス
+    let adviceHtml = `<p><strong>${age}</strong>の<strong>${petType}ちゃん</strong>ですね。ご要望やお悩みに合わせて、お店でも信頼が厚くサンプルや小分けパックが充実したおすすめフードをご提案します。</p>`;
     document.getElementById('reply-text').innerHTML = adviceHtml;
 
+    // フードカードの生成（犬猫を完全に出し分け）
     let foodCardsHtml = "";
     selectedSymptoms.forEach((symptom) => {
-        const data = foodDatabase[symptom];
+        const data = foodDatabase[petType][symptom]; // ここで犬用・猫用を自動判別
         if (data) {
             const encodedName = encodeURIComponent(data.name);
             const encodedMaker = encodeURIComponent(data.maker);
 
+            // アフィリエイトやサイト運営に使えるリンクURL
             const officialUrl = `https://google.com{encodedMaker}+${encodedName}+公式サイト`;
-            const rakutenUrl = `https://rakuten.co.jp{encodedName}/`;
-            const yahooUrl = `https://yahoo.co.jp{encodedName}`;
-            const amazonUrl = `https://amazon.co.jp{encodedName}`;
-
-            foodCardsHtml += `
-                <div class="food-card">
-                    <div class="food-title">${data.name}</div>
-                    <div class="maker-name">■ メーカー：${data.maker}</div>
-                    <img src="${data.img}" class="food-img" alt="フード画像">
-                    <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #555;">${data.desc}</p>
-                    <div class="shop-links">
-                        <a href="${officialUrl}" target="_blank" class="shop-btn official">メーカー公式サイトで詳しく見る</a>
-                        <a href="${rakutenUrl}" target="_blank" class="shop-btn rakuten">楽天市場で探す</a>
-                        <a href="${yahooUrl}" target="_blank" class="shop-btn yahoo">Yahoo!ショッピングで探す</a>
-                        <a href="${amazonUrl}" target="_blank" class="shop-btn amazon">Amazonで探す</a>
-                    </div>
-                </div>
-            `;
-        }
-    });
-
-    document.getElementById('recommended-foods').innerHTML = foodCardsHtml;
-    document.getElementById('chat-box').style.display = 'block';
-    
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-}
-</script>
-
-</body>
-</html>
-
-																								
