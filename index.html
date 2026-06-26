@@ -44,13 +44,12 @@
     <div class="section-title">2. 年齢ステージ</div>
     <div class="radio-group">
         <label><input type="radio" name="age" value="パピー・子猫"> パピー・子猫</label>
-        <label><input type="radio" name="age" value="成犬・成猫" checked> 成犬・成猫</label>
+        <label><input type="radio" name="age" value="成犬・成猫" checked> 成猫・成猫</label>
         <label><input type="radio" name="age" value="シニア"> シニア</label>
     </div>
 
     <div class="section-title">3. 気になる症状やご希望</div>
     <form id="symptomForm">
-        <!-- value属性を英語（ID）に変更し、JSのキーと一致させました -->
         <label class="check-item"><input type="checkbox" name="symptoms" value="fish"> 魚のご飯（フィッシュ）🐟 お肉不使用・お魚のご飯が良い</label>
         <label class="check-item"><input type="checkbox" name="symptoms" value="tears"> 涙やけ😭 涙やけが気になる</label>
         <label class="check-item"><input type="checkbox" name="symptoms" value="skin"> 皮膚・毛並み✨ 皮膚のカカカイ・毛並み</label>
@@ -71,7 +70,12 @@
 </div>
 
 <script>
-// 配列 [ ] から オブジェクト { } に修正し、キーを英語に統一しました
+// 🚨 エラー強制表示機能（スマホデバッグ用）
+window.onerror = function(message, source, lineno, colno, error) {
+    alert("⚠️ JSエラーが発生しました！\n\nエラー内容: " + message + "\n行番号: " + lineno);
+    return true;
+};
+
 const foodDatabase = {
     "fish": {
         name: "シンプル ワイルドレシピ（超小型犬〜小型犬用）成犬用 サーモン",
@@ -108,8 +112,6 @@ const foodDatabase = {
 function generateTotalAdvice() {
     const petType = document.querySelector('input[name="petType"]:checked').value;
     const age = document.querySelector('input[name="age"]:checked').value;
-    
-    // チェックされたすべてのチェックボックスを取得
     const checkboxes = document.querySelectorAll('input[name="symptoms"]:checked');
     
     let selectedSymptoms = [];
@@ -117,23 +119,19 @@ function generateTotalAdvice() {
         selectedSymptoms.push(cb.value);
     });
 
-    // 1つも選択されていない場合の警告
     if (selectedSymptoms.length === 0) {
         alert("気になる項目を1つ以上チェックしてください！");
         return;
     }
 
-    // 特別なアドバイス（例: ねこ×シニア）
     let specialEpisode = "";
     if (petType === "ねこ" && age === "シニア") {
         specialEpisode = "<p><strong>シニア期の猫ちゃん</strong>は、リーズナブルなご飯をずっと食べて元気な子もおられます。</p>";
     }
 
-    // メインアドバイスのテキスト作成
     let adviceHtml = `<p><strong>${age}</strong>の<strong>${petType}ちゃん</strong>ですね。ご要望に合わせて、お店でも信頼の厚い厳選ブランドから最適なフードをご提案します。</p>${specialEpisode}`;
     document.getElementById('reply-text').innerHTML = adviceHtml;
 
-    // フードカードの生成
     let foodCardsHtml = "";
     selectedSymptoms.forEach((symptom) => {
         const data = foodDatabase[symptom];
@@ -141,10 +139,9 @@ function generateTotalAdvice() {
             const encodedName = encodeURIComponent(data.name);
             const encodedMaker = encodeURIComponent(data.maker);
 
-            // 検索URLの生成
             const officialUrl = `https://google.com{encodedMaker}+${encodedName}+公式サイト`;
             const rakutenUrl = `https://rakuten.co.jp{encodedName}/`;
-            const yahooUrl = `https://yahoo.co.id{encodedName}`;
+            const yahooUrl = `https://yahoo.co.jp{encodedName}`;
             const amazonUrl = `https://amazon.co.jp{encodedName}`;
 
             foodCardsHtml += `
@@ -156,7 +153,7 @@ function generateTotalAdvice() {
                     <div class="shop-links">
                         <a href="${officialUrl}" target="_blank" class="shop-btn official">メーカー公式サイトで詳しく見る</a>
                         <a href="${rakutenUrl}" target="_blank" class="shop-btn rakuten">楽天市場で探す</a>
-                        <a href="${yahooUrl}" target="_blank" class="shop-btn yahoo">Yahoo!で探す</a>
+                        <a href="${yahooUrl}" target="_blank" class="shop-btn yahoo">Yahoo!ショッピングで探す</a>
                         <a href="${amazonUrl}" target="_blank" class="shop-btn amazon">Amazonで探す</a>
                     </div>
                 </div>
@@ -164,15 +161,14 @@ function generateTotalAdvice() {
         }
     });
 
-    // 画面への反映
     document.getElementById('recommended-foods').innerHTML = foodCardsHtml;
     document.getElementById('chat-box').style.display = 'block';
     
-    // スムーズに結果画面へスクロール
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 </script>
 
 </body>
 </html>
+
 																								
